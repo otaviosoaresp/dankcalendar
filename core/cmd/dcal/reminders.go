@@ -96,7 +96,10 @@ func remindersCall(method string, params map[string]any) (any, error) {
 	if resp.Error != "" {
 		return nil, fmt.Errorf("%s", resp.Error)
 	}
-	return resp.Result, nil
+	if resp.Result == nil {
+		return nil, nil
+	}
+	return *resp.Result, nil
 }
 
 func decodeUpcoming(result any) ([]reminders.Upcoming, error) {
