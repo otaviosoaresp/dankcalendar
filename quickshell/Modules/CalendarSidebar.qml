@@ -5,6 +5,7 @@ import qs.Modals
 import qs.Services
 import qs.Widgets
 import qs.DankCommon.Widgets
+import qs.DankCommon.FileBrowser
 
 Item {
     id: root
@@ -311,6 +312,20 @@ Item {
         actionCalendar = cal;
         colorLoader.active = true;
         colorLoader.item.show(cal);
+    }
+
+    function copyCalendarIcsLink(cal) {
+        DankCalService.getCalendarIcsLink(cal.id, url => {
+            if (url)
+                Quickshell.clipboardText = url;
+        });
+    }
+
+    function exportCalendarToFile(cal) {
+        actionCalendar = cal;
+        exportIcsLoader.active = true;
+        exportIcsLoader.item.defaultFileName = cal.name.replace(/[\/\\:*?"<>|]/g, "_") + ".ics";
+        exportIcsLoader.item.open();
     }
 
     function confirmDeleteCalendar(cal) {
@@ -1061,6 +1076,16 @@ Item {
                     id: "color",
                     label: I18n.tr("Color…", "calendar context menu action to change a calendar's color"),
                     icon: "palette"
+                },
+                {
+                    id: "copyIcsLink",
+                    label: I18n.tr("Copy ICS link", "calendar context menu action to copy the local ICS subscription URL"),
+                    icon: "link"
+                },
+                {
+                    id: "exportIcs",
+                    label: I18n.tr("Export .ics…", "calendar context menu action to export the calendar to a file"),
+                    icon: "file_download"
                 }
             ];
             if (cal.accountKind !== "local") {
@@ -1095,6 +1120,12 @@ Item {
             case "color":
                 root.openCalendarColor(cal);
                 break;
+            case "copyIcsLink":
+                root.copyCalendarIcsLink(cal);
+                break;
+            case "exportIcs":
+                root.exportCalendarToFile(cal);
+                break;
             case "delete":
                 root.confirmDeleteCalendar(cal);
                 break;
@@ -1123,6 +1154,21 @@ Item {
         active: false
         sourceComponent: NewCalendarDialog {
             onClosed: newCalendarLoader.active = false
+        }
+    }
+
+    Loader {
+        id: exportIcsLoader
+        active: false
+        sourceComponent: FileBrowserModal {
+            saveMode: true
+            fileExtensions: ["ics"]
+            browserTitle: I18n.tr("Export .ics", "window title for the calendar export file picker")
+            onAccepted: paths => {
+                if (root.actionCalendar && paths.length > 0)
+                    DankCalService.exportCalendarIcsToFile(root.actionCalendar.id, paths[0]);
+            }
+            onDialogClosed: exportIcsLoader.active = false
         }
     }
 

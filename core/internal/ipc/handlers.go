@@ -33,6 +33,12 @@ func HandleCalendars(ctx context.Context, w *ConnWriter, req Request, deps Deps)
 		handleCalendarSetReminders(ctx, w, req, deps)
 	case "calendars.delete":
 		handleCalendarDelete(ctx, w, req, deps)
+	case "calendars.export":
+		handleCalendarExport(ctx, w, req, deps)
+	case "calendars.exportToFile":
+		handleCalendarExportToFile(ctx, w, req, deps)
+	case "calendars.icsLink":
+		handleCalendarIcsLink(ctx, w, req, deps)
 	default:
 		RespondError(w, req.ID, "unknown calendars method: "+req.Method)
 	}

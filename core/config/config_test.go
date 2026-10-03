@@ -33,7 +33,7 @@ func TestConfigDefaults(t *testing.T) {
 
 	cfg := config.New()
 
-	assert.Equal(t, "127.0.0.1:0", cfg.APIAddr)
+	assert.Equal(t, "127.0.0.1:47621", cfg.APIAddr)
 	assert.Equal(t, "127.0.0.1:0", cfg.OAuthBindAddr)
 	assert.Empty(t, cfg.DatabasePath)
 	assert.False(t, cfg.DisableHTTP)

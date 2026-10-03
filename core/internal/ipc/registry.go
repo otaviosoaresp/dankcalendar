@@ -54,6 +54,9 @@ var Methods = []MethodSpec{
 	{Name: "calendars.setColor", Group: "calendars", Desc: "Override a calendar color (empty clears)", Params: []ParamSpec{req("calendarId", ""), opt("color", "hex color like #RRGGBB")}},
 	{Name: "calendars.setReminders", Group: "calendars", Desc: "Set per-calendar reminder overrides (empty clears)", Params: []ParamSpec{req("calendarId", ""), opt("overrides", "override object; omit to inherit")}},
 	{Name: "calendars.delete", Group: "calendars", Desc: "Delete a calendar", Params: []ParamSpec{req("calendarId", "")}},
+	{Name: "calendars.export", Group: "calendars", Desc: "Export a calendar as iCalendar text", Params: []ParamSpec{req("calendarId", "")}},
+	{Name: "calendars.exportToFile", Group: "calendars", Desc: "Export a calendar to a .ics file on disk", Params: []ParamSpec{req("calendarId", ""), req("path", "absolute destination path")}},
+	{Name: "calendars.icsLink", Group: "calendars", Desc: "Get the local ICS subscription URL for a calendar", Params: []ParamSpec{req("calendarId", "")}},
 
 	{Name: "events.list", Group: "events", Desc: "List events", Params: []ParamSpec{opt("query", "text filter"), opt("from", "RFC3339"), opt("to", "RFC3339"), opt("limit", ""), opt("offset", "")}},
 	{Name: "events.get", Group: "events", Desc: "Get an event by iCal UID", Params: []ParamSpec{req("uid", "event iCal UID"), opt("calendarId", "limit to one calendar"), opt("start", "occurrence start RFC3339 for recurring events")}},

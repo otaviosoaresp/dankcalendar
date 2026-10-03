@@ -34,6 +34,7 @@ type Deps struct {
 	Broker      *oauth.CallbackBroker
 	Flows       *oauth.FlowRegistry
 	HTTPAddr    string
+	IcsSecret   []byte
 	Sync        SyncTrigger
 	Reminders   RemindersEngine
 	Bus         *EventBus

@@ -6,7 +6,9 @@ import (
 )
 
 type Config struct {
-	APIAddr           string `env:"DANKCAL_API_ADDR" envDefault:"127.0.0.1:0"`
+	// A fixed default (overridable via env) rather than ":0" keeps ICS
+	// subscription URLs working across daemon restarts.
+	APIAddr           string `env:"DANKCAL_API_ADDR" envDefault:"127.0.0.1:47621"`
 	OAuthBindAddr     string `env:"DANKCAL_OAUTH_ADDR" envDefault:"127.0.0.1:0"`
 	DatabasePath      string `env:"DANKCAL_DB_PATH"`
 	GoogleClientID    string `env:"DANKCAL_GOOGLE_CLIENT_ID"`
