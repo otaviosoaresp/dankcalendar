@@ -90,6 +90,11 @@ func Color(v string) predicate.Calendar {
 	return predicate.Calendar(sql.FieldEQ(FieldColor, v))
 }
 
+// ColorOverride applies equality check predicate on the "color_override" field. It's identical to ColorOverrideEQ.
+func ColorOverride(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldEQ(FieldColorOverride, v))
+}
+
 // TimeZone applies equality check predicate on the "time_zone" field. It's identical to TimeZoneEQ.
 func TimeZone(v string) predicate.Calendar {
 	return predicate.Calendar(sql.FieldEQ(FieldTimeZone, v))
@@ -478,6 +483,81 @@ func ColorEqualFold(v string) predicate.Calendar {
 // ColorContainsFold applies the ContainsFold predicate on the "color" field.
 func ColorContainsFold(v string) predicate.Calendar {
 	return predicate.Calendar(sql.FieldContainsFold(FieldColor, v))
+}
+
+// ColorOverrideEQ applies the EQ predicate on the "color_override" field.
+func ColorOverrideEQ(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldEQ(FieldColorOverride, v))
+}
+
+// ColorOverrideNEQ applies the NEQ predicate on the "color_override" field.
+func ColorOverrideNEQ(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldNEQ(FieldColorOverride, v))
+}
+
+// ColorOverrideIn applies the In predicate on the "color_override" field.
+func ColorOverrideIn(vs ...string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldIn(FieldColorOverride, vs...))
+}
+
+// ColorOverrideNotIn applies the NotIn predicate on the "color_override" field.
+func ColorOverrideNotIn(vs ...string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldNotIn(FieldColorOverride, vs...))
+}
+
+// ColorOverrideGT applies the GT predicate on the "color_override" field.
+func ColorOverrideGT(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldGT(FieldColorOverride, v))
+}
+
+// ColorOverrideGTE applies the GTE predicate on the "color_override" field.
+func ColorOverrideGTE(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldGTE(FieldColorOverride, v))
+}
+
+// ColorOverrideLT applies the LT predicate on the "color_override" field.
+func ColorOverrideLT(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldLT(FieldColorOverride, v))
+}
+
+// ColorOverrideLTE applies the LTE predicate on the "color_override" field.
+func ColorOverrideLTE(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldLTE(FieldColorOverride, v))
+}
+
+// ColorOverrideContains applies the Contains predicate on the "color_override" field.
+func ColorOverrideContains(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldContains(FieldColorOverride, v))
+}
+
+// ColorOverrideHasPrefix applies the HasPrefix predicate on the "color_override" field.
+func ColorOverrideHasPrefix(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldHasPrefix(FieldColorOverride, v))
+}
+
+// ColorOverrideHasSuffix applies the HasSuffix predicate on the "color_override" field.
+func ColorOverrideHasSuffix(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldHasSuffix(FieldColorOverride, v))
+}
+
+// ColorOverrideIsNil applies the IsNil predicate on the "color_override" field.
+func ColorOverrideIsNil() predicate.Calendar {
+	return predicate.Calendar(sql.FieldIsNull(FieldColorOverride))
+}
+
+// ColorOverrideNotNil applies the NotNil predicate on the "color_override" field.
+func ColorOverrideNotNil() predicate.Calendar {
+	return predicate.Calendar(sql.FieldNotNull(FieldColorOverride))
+}
+
+// ColorOverrideEqualFold applies the EqualFold predicate on the "color_override" field.
+func ColorOverrideEqualFold(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldEqualFold(FieldColorOverride, v))
+}
+
+// ColorOverrideContainsFold applies the ContainsFold predicate on the "color_override" field.
+func ColorOverrideContainsFold(v string) predicate.Calendar {
+	return predicate.Calendar(sql.FieldContainsFold(FieldColorOverride, v))
 }
 
 // TimeZoneEQ applies the EQ predicate on the "time_zone" field.

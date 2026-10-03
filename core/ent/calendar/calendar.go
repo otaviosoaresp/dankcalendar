@@ -24,6 +24,8 @@ const (
 	FieldDescription = "description"
 	// FieldColor holds the string denoting the color field in the database.
 	FieldColor = "color"
+	// FieldColorOverride holds the string denoting the color_override field in the database.
+	FieldColorOverride = "color_override"
 	// FieldTimeZone holds the string denoting the time_zone field in the database.
 	FieldTimeZone = "time_zone"
 	// FieldReadOnly holds the string denoting the read_only field in the database.
@@ -81,6 +83,7 @@ var Columns = []string{
 	FieldNameOverride,
 	FieldDescription,
 	FieldColor,
+	FieldColorOverride,
 	FieldTimeZone,
 	FieldReadOnly,
 	FieldHidden,
@@ -165,6 +168,11 @@ func ByDescription(opts ...sql.OrderTermOption) OrderOption {
 // ByColor orders the results by the color field.
 func ByColor(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldColor, opts...).ToFunc()
+}
+
+// ByColorOverride orders the results by the color_override field.
+func ByColorOverride(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldColorOverride, opts...).ToFunc()
 }
 
 // ByTimeZone orders the results by the time_zone field.

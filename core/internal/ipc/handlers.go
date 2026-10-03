@@ -27,6 +27,8 @@ func HandleCalendars(ctx context.Context, w *ConnWriter, req Request, deps Deps)
 		handleCalendarSetSyncDisabled(ctx, w, req, deps)
 	case "calendars.rename":
 		handleCalendarRename(ctx, w, req, deps)
+	case "calendars.setColor":
+		handleCalendarSetColor(ctx, w, req, deps)
 	case "calendars.setReminders":
 		handleCalendarSetReminders(ctx, w, req, deps)
 	case "calendars.delete":
@@ -128,13 +130,18 @@ func mapCalendars(items []*ent.Calendar) []map[string]any {
 		if c.NameOverride != "" {
 			name = c.NameOverride
 		}
+		color := c.Color
+		if c.ColorOverride != "" {
+			color = c.ColorOverride
+		}
 		entry := map[string]any{
 			"id":                  c.ID,
 			"remoteId":            c.RemoteID,
 			"name":                name,
 			"providerName":        c.Name,
 			"description":         c.Description,
-			"color":               c.Color,
+			"color":               color,
+			"providerColor":       c.Color,
 			"timeZone":            c.TimeZone,
 			"readOnly":            c.ReadOnly,
 			"hidden":              c.Hidden,

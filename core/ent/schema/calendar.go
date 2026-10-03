@@ -35,6 +35,10 @@ func (Calendar) Fields() []ent.Field {
 			Optional(),
 		field.String("color").
 			Optional(),
+		// User-set display color; owned locally like name_override, never
+		// touched by provider sync.
+		field.String("color_override").
+			Optional(),
 		field.String("time_zone").
 			Optional(),
 		field.Bool("read_only").

@@ -51,6 +51,7 @@ var Methods = []MethodSpec{
 	{Name: "calendars.setHidden", Group: "calendars", Desc: "Show or hide a calendar", Params: []ParamSpec{req("calendarId", ""), req("hidden", "true|false")}},
 	{Name: "calendars.setSyncDisabled", Group: "calendars", Desc: "Exclude a calendar from provider sync (purges the local copy)", Params: []ParamSpec{req("calendarId", ""), req("disabled", "true|false")}},
 	{Name: "calendars.rename", Group: "calendars", Desc: "Override a calendar name (empty clears)", Params: []ParamSpec{req("calendarId", ""), opt("name", "")}},
+	{Name: "calendars.setColor", Group: "calendars", Desc: "Override a calendar color (empty clears)", Params: []ParamSpec{req("calendarId", ""), opt("color", "hex color like #RRGGBB")}},
 	{Name: "calendars.setReminders", Group: "calendars", Desc: "Set per-calendar reminder overrides (empty clears)", Params: []ParamSpec{req("calendarId", ""), opt("overrides", "override object; omit to inherit")}},
 	{Name: "calendars.delete", Group: "calendars", Desc: "Delete a calendar", Params: []ParamSpec{req("calendarId", "")}},
 

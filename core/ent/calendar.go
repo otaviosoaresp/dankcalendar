@@ -30,6 +30,8 @@ type Calendar struct {
 	Description string `json:"description,omitempty"`
 	// Color holds the value of the "color" field.
 	Color string `json:"color,omitempty"`
+	// ColorOverride holds the value of the "color_override" field.
+	ColorOverride string `json:"color_override,omitempty"`
 	// TimeZone holds the value of the "time_zone" field.
 	TimeZone string `json:"time_zone,omitempty"`
 	// ReadOnly holds the value of the "read_only" field.
@@ -106,7 +108,7 @@ func (*Calendar) scanValues(columns []string) ([]any, error) {
 			values[i] = new([]byte)
 		case calendar.FieldReadOnly, calendar.FieldHidden, calendar.FieldSyncDisabled:
 			values[i] = new(sql.NullBool)
-		case calendar.FieldID, calendar.FieldRemoteID, calendar.FieldName, calendar.FieldNameOverride, calendar.FieldDescription, calendar.FieldColor, calendar.FieldTimeZone, calendar.FieldSyncToken:
+		case calendar.FieldID, calendar.FieldRemoteID, calendar.FieldName, calendar.FieldNameOverride, calendar.FieldDescription, calendar.FieldColor, calendar.FieldColorOverride, calendar.FieldTimeZone, calendar.FieldSyncToken:
 			values[i] = new(sql.NullString)
 		case calendar.FieldCreatedAt, calendar.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -162,6 +164,12 @@ func (_m *Calendar) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field color", values[i])
 			} else if value.Valid {
 				_m.Color = value.String
+			}
+		case calendar.FieldColorOverride:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field color_override", values[i])
+			} else if value.Valid {
+				_m.ColorOverride = value.String
 			}
 		case calendar.FieldTimeZone:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -293,6 +301,9 @@ func (_m *Calendar) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("color=")
 	builder.WriteString(_m.Color)
+	builder.WriteString(", ")
+	builder.WriteString("color_override=")
+	builder.WriteString(_m.ColorOverride)
 	builder.WriteString(", ")
 	builder.WriteString("time_zone=")
 	builder.WriteString(_m.TimeZone)

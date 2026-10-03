@@ -162,6 +162,42 @@ func TestCalendarNameOverrideSurvivesSync(t *testing.T) {
 	require.Empty(t, cleared.NameOverride)
 }
 
+func TestCalendarColorOverrideSurvivesSync(t *testing.T) {
+	r, ctx := newTestRepo(t)
+
+	_, err := r.CreateAccount(ctx, repo.CreateAccountInput{
+		ID:          "personal",
+		Kind:        account.KindLocal,
+		DisplayName: "Personal",
+	})
+	require.NoError(t, err)
+
+	cal, err := r.UpsertCalendar(ctx, repo.UpsertCalendarInput{
+		AccountID: "personal",
+		RemoteID:  "file:work.ics",
+		Name:      "Work",
+		Color:     "#ff0000",
+	})
+	require.NoError(t, err)
+
+	require.NoError(t, r.SetCalendarColorOverride(ctx, cal.ID, "#00ff00"))
+
+	synced, err := r.UpsertCalendar(ctx, repo.UpsertCalendarInput{
+		AccountID: "personal",
+		RemoteID:  "file:work.ics",
+		Name:      "Work",
+		Color:     "#0000ff",
+	})
+	require.NoError(t, err)
+	require.Equal(t, "#0000ff", synced.Color)
+	require.Equal(t, "#00ff00", synced.ColorOverride)
+
+	require.NoError(t, r.SetCalendarColorOverride(ctx, cal.ID, ""))
+	cleared, err := r.GetCalendar(ctx, cal.ID)
+	require.NoError(t, err)
+	require.Empty(t, cleared.ColorOverride)
+}
+
 func TestSetCalendarSyncDisabled(t *testing.T) {
 	r, ctx := newTestRepo(t)
 

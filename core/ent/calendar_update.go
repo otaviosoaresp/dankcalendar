@@ -122,6 +122,26 @@ func (_u *CalendarUpdate) ClearColor() *CalendarUpdate {
 	return _u
 }
 
+// SetColorOverride sets the "color_override" field.
+func (_u *CalendarUpdate) SetColorOverride(v string) *CalendarUpdate {
+	_u.mutation.SetColorOverride(v)
+	return _u
+}
+
+// SetNillableColorOverride sets the "color_override" field if the given value is not nil.
+func (_u *CalendarUpdate) SetNillableColorOverride(v *string) *CalendarUpdate {
+	if v != nil {
+		_u.SetColorOverride(*v)
+	}
+	return _u
+}
+
+// ClearColorOverride clears the value of the "color_override" field.
+func (_u *CalendarUpdate) ClearColorOverride() *CalendarUpdate {
+	_u.mutation.ClearColorOverride()
+	return _u
+}
+
 // SetTimeZone sets the "time_zone" field.
 func (_u *CalendarUpdate) SetTimeZone(v string) *CalendarUpdate {
 	_u.mutation.SetTimeZone(v)
@@ -430,6 +450,12 @@ func (_u *CalendarUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if _u.mutation.ColorCleared() {
 		_spec.ClearField(calendar.FieldColor, field.TypeString)
 	}
+	if value, ok := _u.mutation.ColorOverride(); ok {
+		_spec.SetField(calendar.FieldColorOverride, field.TypeString, value)
+	}
+	if _u.mutation.ColorOverrideCleared() {
+		_spec.ClearField(calendar.FieldColorOverride, field.TypeString)
+	}
 	if value, ok := _u.mutation.TimeZone(); ok {
 		_spec.SetField(calendar.FieldTimeZone, field.TypeString, value)
 	}
@@ -697,6 +723,26 @@ func (_u *CalendarUpdateOne) SetNillableColor(v *string) *CalendarUpdateOne {
 // ClearColor clears the value of the "color" field.
 func (_u *CalendarUpdateOne) ClearColor() *CalendarUpdateOne {
 	_u.mutation.ClearColor()
+	return _u
+}
+
+// SetColorOverride sets the "color_override" field.
+func (_u *CalendarUpdateOne) SetColorOverride(v string) *CalendarUpdateOne {
+	_u.mutation.SetColorOverride(v)
+	return _u
+}
+
+// SetNillableColorOverride sets the "color_override" field if the given value is not nil.
+func (_u *CalendarUpdateOne) SetNillableColorOverride(v *string) *CalendarUpdateOne {
+	if v != nil {
+		_u.SetColorOverride(*v)
+	}
+	return _u
+}
+
+// ClearColorOverride clears the value of the "color_override" field.
+func (_u *CalendarUpdateOne) ClearColorOverride() *CalendarUpdateOne {
+	_u.mutation.ClearColorOverride()
 	return _u
 }
 
@@ -1037,6 +1083,12 @@ func (_u *CalendarUpdateOne) sqlSave(ctx context.Context) (_node *Calendar, err 
 	}
 	if _u.mutation.ColorCleared() {
 		_spec.ClearField(calendar.FieldColor, field.TypeString)
+	}
+	if value, ok := _u.mutation.ColorOverride(); ok {
+		_spec.SetField(calendar.FieldColorOverride, field.TypeString, value)
+	}
+	if _u.mutation.ColorOverrideCleared() {
+		_spec.ClearField(calendar.FieldColorOverride, field.TypeString)
 	}
 	if value, ok := _u.mutation.TimeZone(); ok {
 		_spec.SetField(calendar.FieldTimeZone, field.TypeString, value)

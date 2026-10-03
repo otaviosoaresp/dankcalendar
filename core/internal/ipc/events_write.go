@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"regexp"
 	"strings"
 	"time"
 
@@ -330,6 +331,32 @@ func handleCalendarRename(ctx context.Context, w *ConnWriter, req Request, deps 
 		deps.Bus.Publish("calendars", map[string]any{"type": "changed", "calendarId": id})
 	}
 	Respond(w, req.ID, map[string]any{"calendarId": id, "name": name})
+}
+
+var hexColorRe = regexp.MustCompile(`^#[0-9a-fA-F]{6}$`)
+
+func handleCalendarSetColor(ctx context.Context, w *ConnWriter, req Request, deps Deps) {
+	id := ParamString(req.Params, "calendarId")
+	if id == "" {
+		RespondError(w, req.ID, "calendarId is required")
+		return
+	}
+
+	// Empty color clears the override, falling back to the provider color.
+	color := strings.TrimSpace(ParamString(req.Params, "color"))
+	if color != "" && !hexColorRe.MatchString(color) {
+		RespondError(w, req.ID, "color must be a hex value like #RRGGBB")
+		return
+	}
+	if err := deps.Repo.SetCalendarColorOverride(ctx, id, color); err != nil {
+		RespondError(w, req.ID, err.Error())
+		return
+	}
+
+	if deps.Bus != nil {
+		deps.Bus.Publish("calendars", map[string]any{"type": "changed", "calendarId": id})
+	}
+	Respond(w, req.ID, map[string]any{"calendarId": id, "color": color})
 }
 
 func handleCalendarSetReminders(ctx context.Context, w *ConnWriter, req Request, deps Deps) {

@@ -140,6 +140,16 @@ func (r *Repo) SetCalendarNameOverride(ctx context.Context, id, name string) err
 	return upd.Exec(ctx)
 }
 
+func (r *Repo) SetCalendarColorOverride(ctx context.Context, id, color string) error {
+	upd := r.client.Calendar.UpdateOneID(id)
+	if color == "" {
+		upd.ClearColorOverride()
+	} else {
+		upd.SetColorOverride(color)
+	}
+	return upd.Exec(ctx)
+}
+
 // SetCalendarReminders stores per-calendar reminder overrides. A nil or empty
 // override clears the field, reverting the calendar to the global settings.
 func (r *Repo) SetCalendarReminders(ctx context.Context, id string, o *settings.ReminderOverride) error {

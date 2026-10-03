@@ -997,6 +997,7 @@ type CalendarMutation struct {
 	name_override              *string
 	description                *string
 	color                      *string
+	color_override             *string
 	time_zone                  *string
 	read_only                  *bool
 	hidden                     *bool
@@ -1342,6 +1343,55 @@ func (m *CalendarMutation) ColorCleared() bool {
 func (m *CalendarMutation) ResetColor() {
 	m.color = nil
 	delete(m.clearedFields, calendar.FieldColor)
+}
+
+// SetColorOverride sets the "color_override" field.
+func (m *CalendarMutation) SetColorOverride(s string) {
+	m.color_override = &s
+}
+
+// ColorOverride returns the value of the "color_override" field in the mutation.
+func (m *CalendarMutation) ColorOverride() (r string, exists bool) {
+	v := m.color_override
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldColorOverride returns the old "color_override" field's value of the Calendar entity.
+// If the Calendar object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CalendarMutation) OldColorOverride(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldColorOverride is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldColorOverride requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldColorOverride: %w", err)
+	}
+	return oldValue.ColorOverride, nil
+}
+
+// ClearColorOverride clears the value of the "color_override" field.
+func (m *CalendarMutation) ClearColorOverride() {
+	m.color_override = nil
+	m.clearedFields[calendar.FieldColorOverride] = struct{}{}
+}
+
+// ColorOverrideCleared returns if the "color_override" field was cleared in this mutation.
+func (m *CalendarMutation) ColorOverrideCleared() bool {
+	_, ok := m.clearedFields[calendar.FieldColorOverride]
+	return ok
+}
+
+// ResetColorOverride resets all changes to the "color_override" field.
+func (m *CalendarMutation) ResetColorOverride() {
+	m.color_override = nil
+	delete(m.clearedFields, calendar.FieldColorOverride)
 }
 
 // SetTimeZone sets the "time_zone" field.
@@ -1917,7 +1967,7 @@ func (m *CalendarMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CalendarMutation) Fields() []string {
-	fields := make([]string, 0, 14)
+	fields := make([]string, 0, 15)
 	if m.remote_id != nil {
 		fields = append(fields, calendar.FieldRemoteID)
 	}
@@ -1932,6 +1982,9 @@ func (m *CalendarMutation) Fields() []string {
 	}
 	if m.color != nil {
 		fields = append(fields, calendar.FieldColor)
+	}
+	if m.color_override != nil {
+		fields = append(fields, calendar.FieldColorOverride)
 	}
 	if m.time_zone != nil {
 		fields = append(fields, calendar.FieldTimeZone)
@@ -1978,6 +2031,8 @@ func (m *CalendarMutation) Field(name string) (ent.Value, bool) {
 		return m.Description()
 	case calendar.FieldColor:
 		return m.Color()
+	case calendar.FieldColorOverride:
+		return m.ColorOverride()
 	case calendar.FieldTimeZone:
 		return m.TimeZone()
 	case calendar.FieldReadOnly:
@@ -2015,6 +2070,8 @@ func (m *CalendarMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldDescription(ctx)
 	case calendar.FieldColor:
 		return m.OldColor(ctx)
+	case calendar.FieldColorOverride:
+		return m.OldColorOverride(ctx)
 	case calendar.FieldTimeZone:
 		return m.OldTimeZone(ctx)
 	case calendar.FieldReadOnly:
@@ -2076,6 +2133,13 @@ func (m *CalendarMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetColor(v)
+		return nil
+	case calendar.FieldColorOverride:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetColorOverride(v)
 		return nil
 	case calendar.FieldTimeZone:
 		v, ok := value.(string)
@@ -2179,6 +2243,9 @@ func (m *CalendarMutation) ClearedFields() []string {
 	if m.FieldCleared(calendar.FieldColor) {
 		fields = append(fields, calendar.FieldColor)
 	}
+	if m.FieldCleared(calendar.FieldColorOverride) {
+		fields = append(fields, calendar.FieldColorOverride)
+	}
 	if m.FieldCleared(calendar.FieldTimeZone) {
 		fields = append(fields, calendar.FieldTimeZone)
 	}
@@ -2214,6 +2281,9 @@ func (m *CalendarMutation) ClearField(name string) error {
 	case calendar.FieldColor:
 		m.ClearColor()
 		return nil
+	case calendar.FieldColorOverride:
+		m.ClearColorOverride()
+		return nil
 	case calendar.FieldTimeZone:
 		m.ClearTimeZone()
 		return nil
@@ -2248,6 +2318,9 @@ func (m *CalendarMutation) ResetField(name string) error {
 		return nil
 	case calendar.FieldColor:
 		m.ResetColor()
+		return nil
+	case calendar.FieldColorOverride:
+		m.ResetColorOverride()
 		return nil
 	case calendar.FieldTimeZone:
 		m.ResetTimeZone()

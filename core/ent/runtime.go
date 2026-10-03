@@ -68,23 +68,23 @@ func init() {
 	// calendar.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	calendar.NameValidator = calendarDescName.Validators[0].(func(string) error)
 	// calendarDescReadOnly is the schema descriptor for read_only field.
-	calendarDescReadOnly := calendarFields[7].Descriptor()
+	calendarDescReadOnly := calendarFields[8].Descriptor()
 	// calendar.DefaultReadOnly holds the default value on creation for the read_only field.
 	calendar.DefaultReadOnly = calendarDescReadOnly.Default.(bool)
 	// calendarDescHidden is the schema descriptor for hidden field.
-	calendarDescHidden := calendarFields[8].Descriptor()
+	calendarDescHidden := calendarFields[9].Descriptor()
 	// calendar.DefaultHidden holds the default value on creation for the hidden field.
 	calendar.DefaultHidden = calendarDescHidden.Default.(bool)
 	// calendarDescSyncDisabled is the schema descriptor for sync_disabled field.
-	calendarDescSyncDisabled := calendarFields[9].Descriptor()
+	calendarDescSyncDisabled := calendarFields[10].Descriptor()
 	// calendar.DefaultSyncDisabled holds the default value on creation for the sync_disabled field.
 	calendar.DefaultSyncDisabled = calendarDescSyncDisabled.Default.(bool)
 	// calendarDescCreatedAt is the schema descriptor for created_at field.
-	calendarDescCreatedAt := calendarFields[13].Descriptor()
+	calendarDescCreatedAt := calendarFields[14].Descriptor()
 	// calendar.DefaultCreatedAt holds the default value on creation for the created_at field.
 	calendar.DefaultCreatedAt = calendarDescCreatedAt.Default.(func() time.Time)
 	// calendarDescUpdatedAt is the schema descriptor for updated_at field.
-	calendarDescUpdatedAt := calendarFields[14].Descriptor()
+	calendarDescUpdatedAt := calendarFields[15].Descriptor()
 	// calendar.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	calendar.DefaultUpdatedAt = calendarDescUpdatedAt.Default.(func() time.Time)
 	// calendar.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.

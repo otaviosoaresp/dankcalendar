@@ -81,6 +81,20 @@ func (_c *CalendarCreate) SetNillableColor(v *string) *CalendarCreate {
 	return _c
 }
 
+// SetColorOverride sets the "color_override" field.
+func (_c *CalendarCreate) SetColorOverride(v string) *CalendarCreate {
+	_c.mutation.SetColorOverride(v)
+	return _c
+}
+
+// SetNillableColorOverride sets the "color_override" field if the given value is not nil.
+func (_c *CalendarCreate) SetNillableColorOverride(v *string) *CalendarCreate {
+	if v != nil {
+		_c.SetColorOverride(*v)
+	}
+	return _c
+}
+
 // SetTimeZone sets the "time_zone" field.
 func (_c *CalendarCreate) SetTimeZone(v string) *CalendarCreate {
 	_c.mutation.SetTimeZone(v)
@@ -392,6 +406,10 @@ func (_c *CalendarCreate) createSpec() (*Calendar, *sqlgraph.CreateSpec) {
 		_spec.SetField(calendar.FieldColor, field.TypeString, value)
 		_node.Color = value
 	}
+	if value, ok := _c.mutation.ColorOverride(); ok {
+		_spec.SetField(calendar.FieldColorOverride, field.TypeString, value)
+		_node.ColorOverride = value
+	}
 	if value, ok := _c.mutation.TimeZone(); ok {
 		_spec.SetField(calendar.FieldTimeZone, field.TypeString, value)
 		_node.TimeZone = value
@@ -604,6 +622,24 @@ func (u *CalendarUpsert) UpdateColor() *CalendarUpsert {
 // ClearColor clears the value of the "color" field.
 func (u *CalendarUpsert) ClearColor() *CalendarUpsert {
 	u.SetNull(calendar.FieldColor)
+	return u
+}
+
+// SetColorOverride sets the "color_override" field.
+func (u *CalendarUpsert) SetColorOverride(v string) *CalendarUpsert {
+	u.Set(calendar.FieldColorOverride, v)
+	return u
+}
+
+// UpdateColorOverride sets the "color_override" field to the value that was provided on create.
+func (u *CalendarUpsert) UpdateColorOverride() *CalendarUpsert {
+	u.SetExcluded(calendar.FieldColorOverride)
+	return u
+}
+
+// ClearColorOverride clears the value of the "color_override" field.
+func (u *CalendarUpsert) ClearColorOverride() *CalendarUpsert {
+	u.SetNull(calendar.FieldColorOverride)
 	return u
 }
 
@@ -866,6 +902,27 @@ func (u *CalendarUpsertOne) UpdateColor() *CalendarUpsertOne {
 func (u *CalendarUpsertOne) ClearColor() *CalendarUpsertOne {
 	return u.Update(func(s *CalendarUpsert) {
 		s.ClearColor()
+	})
+}
+
+// SetColorOverride sets the "color_override" field.
+func (u *CalendarUpsertOne) SetColorOverride(v string) *CalendarUpsertOne {
+	return u.Update(func(s *CalendarUpsert) {
+		s.SetColorOverride(v)
+	})
+}
+
+// UpdateColorOverride sets the "color_override" field to the value that was provided on create.
+func (u *CalendarUpsertOne) UpdateColorOverride() *CalendarUpsertOne {
+	return u.Update(func(s *CalendarUpsert) {
+		s.UpdateColorOverride()
+	})
+}
+
+// ClearColorOverride clears the value of the "color_override" field.
+func (u *CalendarUpsertOne) ClearColorOverride() *CalendarUpsertOne {
+	return u.Update(func(s *CalendarUpsert) {
+		s.ClearColorOverride()
 	})
 }
 
@@ -1315,6 +1372,27 @@ func (u *CalendarUpsertBulk) UpdateColor() *CalendarUpsertBulk {
 func (u *CalendarUpsertBulk) ClearColor() *CalendarUpsertBulk {
 	return u.Update(func(s *CalendarUpsert) {
 		s.ClearColor()
+	})
+}
+
+// SetColorOverride sets the "color_override" field.
+func (u *CalendarUpsertBulk) SetColorOverride(v string) *CalendarUpsertBulk {
+	return u.Update(func(s *CalendarUpsert) {
+		s.SetColorOverride(v)
+	})
+}
+
+// UpdateColorOverride sets the "color_override" field to the value that was provided on create.
+func (u *CalendarUpsertBulk) UpdateColorOverride() *CalendarUpsertBulk {
+	return u.Update(func(s *CalendarUpsert) {
+		s.UpdateColorOverride()
+	})
+}
+
+// ClearColorOverride clears the value of the "color_override" field.
+func (u *CalendarUpsertBulk) ClearColorOverride() *CalendarUpsertBulk {
+	return u.Update(func(s *CalendarUpsert) {
+		s.ClearColorOverride()
 	})
 }
 

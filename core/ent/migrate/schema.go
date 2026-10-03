@@ -42,6 +42,7 @@ var (
 		{Name: "name_override", Type: field.TypeString, Nullable: true},
 		{Name: "description", Type: field.TypeString, Nullable: true},
 		{Name: "color", Type: field.TypeString, Nullable: true},
+		{Name: "color_override", Type: field.TypeString, Nullable: true},
 		{Name: "time_zone", Type: field.TypeString, Nullable: true},
 		{Name: "read_only", Type: field.TypeBool, Default: false},
 		{Name: "hidden", Type: field.TypeBool, Default: false},
@@ -61,7 +62,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "calendars_accounts_calendars",
-				Columns:    []*schema.Column{CalendarsColumns[15]},
+				Columns:    []*schema.Column{CalendarsColumns[16]},
 				RefColumns: []*schema.Column{AccountsColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
@@ -70,7 +71,7 @@ var (
 			{
 				Name:    "calendar_remote_id_account_calendars",
 				Unique:  true,
-				Columns: []*schema.Column{CalendarsColumns[1], CalendarsColumns[15]},
+				Columns: []*schema.Column{CalendarsColumns[1], CalendarsColumns[16]},
 			},
 		},
 	}
