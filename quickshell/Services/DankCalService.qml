@@ -573,6 +573,20 @@ Singleton {
         });
     }
 
+    function setCalendarColor(calendarId, color, callback) {
+        sendRequest("calendars.setColor", {
+            "calendarId": calendarId,
+            "color": color
+        }, response => {
+            if (response.error)
+                lastError = response.error;
+            else
+                refreshCalendars();
+            if (callback)
+                callback(response);
+        });
+    }
+
     function setCalendarReminders(calendarId, overrides, callback) {
         sendRequest("calendars.setReminders", {
             "calendarId": calendarId,

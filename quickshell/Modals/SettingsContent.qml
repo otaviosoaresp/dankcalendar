@@ -1004,6 +1004,13 @@ Item {
 
                         DankActionButton {
                             anchors.verticalCenter: parent.verticalCenter
+                            iconName: "palette"
+                            tooltipText: I18n.tr("Color", "calendar row action tooltip")
+                            onClicked: calendarColorDialog.show(calendarRow.modelData)
+                        }
+
+                        DankActionButton {
+                            anchors.verticalCenter: parent.verticalCenter
                             iconName: !!calendarRow.modelData.reminders ? "notifications_active" : "notifications"
                             iconColor: !!calendarRow.modelData.reminders ? Theme.primary : Theme.onSurfaceVariant
                             tooltipText: I18n.tr("Reminders", "calendar row action tooltip")
@@ -1047,6 +1054,10 @@ Item {
 
             RenameCalendarDialog {
                 id: calendarRenameDialog
+            }
+
+            CalendarColorDialog {
+                id: calendarColorDialog
             }
 
             CalendarRemindersDialog {
