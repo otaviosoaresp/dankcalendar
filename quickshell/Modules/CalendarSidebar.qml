@@ -307,6 +307,12 @@ Item {
         renameLoader.item.show(cal);
     }
 
+    function openCalendarColor(cal) {
+        actionCalendar = cal;
+        colorLoader.active = true;
+        colorLoader.item.show(cal);
+    }
+
     function confirmDeleteCalendar(cal) {
         actionCalendar = cal;
         deleteConfirmLoader.active = true;
@@ -1050,6 +1056,11 @@ Item {
                     id: "rename",
                     label: I18n.tr("Rename…", "calendar context menu action to rename a calendar"),
                     icon: "edit"
+                },
+                {
+                    id: "color",
+                    label: I18n.tr("Color…", "calendar context menu action to change a calendar's color"),
+                    icon: "palette"
                 }
             ];
             if (cal.accountKind !== "local") {
@@ -1081,6 +1092,9 @@ Item {
             case "rename":
                 root.openRenameCalendar(cal);
                 break;
+            case "color":
+                root.openCalendarColor(cal);
+                break;
             case "delete":
                 root.confirmDeleteCalendar(cal);
                 break;
@@ -1093,6 +1107,14 @@ Item {
         active: false
         sourceComponent: RenameCalendarDialog {
             onClosed: renameLoader.active = false
+        }
+    }
+
+    Loader {
+        id: colorLoader
+        active: false
+        sourceComponent: CalendarColorDialog {
+            onClosed: colorLoader.active = false
         }
     }
 
