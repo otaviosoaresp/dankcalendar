@@ -142,6 +142,7 @@ func mapCalendars(items []*ent.Calendar) []map[string]any {
 			"description":         c.Description,
 			"color":               color,
 			"providerColor":       c.Color,
+			"hasColorOverride":    c.ColorOverride != "",
 			"timeZone":            c.TimeZone,
 			"readOnly":            c.ReadOnly,
 			"hidden":              c.Hidden,

@@ -8,7 +8,7 @@ DankOverlayDialog {
     id: root
 
     property var calendar: null
-    readonly property bool hasOverride: !!(calendar && calendar.providerColor && calendar.color !== calendar.providerColor)
+    readonly property bool hasOverride: !!(calendar && calendar.hasColorOverride)
     readonly property var hexPattern: /^#[0-9a-fA-F]{6}$/
 
     function show(cal) {
@@ -34,7 +34,7 @@ DankOverlayDialog {
     }
 
     title: I18n.tr("Calendar color", "calendar color dialog header")
-    supportingText: hasOverride ? I18n.tr("Synced color is %1. This override only changes it in Dank Calendar.", "calendar color dialog note showing provider color").arg(calendar.providerColor) : ""
+    supportingText: hasOverride ? (calendar.providerColor ? I18n.tr("Synced color is %1. This override only changes it in Dank Calendar.", "calendar color dialog note showing provider color").arg(calendar.providerColor) : I18n.tr("This calendar has no synced color. This override only changes it in Dank Calendar.", "calendar color dialog note when provider has no color")) : ""
     onAccepted: submit()
 
     Row {
