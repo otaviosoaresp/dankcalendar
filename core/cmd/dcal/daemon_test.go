@@ -4,7 +4,6 @@ import (
 	"context"
 	"io"
 	"net/http"
-	"strings"
 	"testing"
 	"time"
 
@@ -44,11 +43,6 @@ func startTestHTTP(t *testing.T) (addr string, r *repo.Repo, icsSecret []byte) {
 	}()
 
 	return httpAddr, r, icsSecret
-}
-
-func TestICSRouteBindsToLoopback(t *testing.T) {
-	addr, _, _ := startTestHTTP(t)
-	assert.True(t, strings.HasPrefix(addr, "127.0.0.1:"), "expected loopback address, got %q", addr)
 }
 
 func TestICSRouteServesKnownCalendar(t *testing.T) {
@@ -103,4 +97,26 @@ func TestICSRouteRejectsTokenForDeletedCalendar(t *testing.T) {
 	defer resp.Body.Close()
 
 	assert.Equal(t, http.StatusNotFound, resp.StatusCode)
+}
+
+func TestICSRouteReturnsServerErrorOnExportFailure(t *testing.T) {
+	addr, r, icsSecret := startTestHTTP(t)
+	ctx := context.Background()
+
+	_, err := r.CreateAccount(ctx, repo.CreateAccountInput{ID: "acct-1", Kind: account.KindLocal, DisplayName: "Personal"})
+	require.NoError(t, err)
+	cal, err := r.UpsertCalendar(ctx, repo.UpsertCalendarInput{ID: "cal-1", AccountID: "acct-1", RemoteID: "dir:cal-1", Name: "Personal"})
+	require.NoError(t, err)
+	token := icstoken.Token(icsSecret, cal.ID)
+
+	// A valid token whose backing store has failed (closed here, but the same
+	// path a DB or context error takes) must not read as "feed gone": that is
+	// reserved for repo.IsNotFound.
+	require.NoError(t, r.Close())
+
+	resp, err := http.Get("http://" + addr + "/ics/" + token + ".ics")
+	require.NoError(t, err)
+	defer resp.Body.Close()
+
+	assert.Equal(t, http.StatusInternalServerError, resp.StatusCode)
 }

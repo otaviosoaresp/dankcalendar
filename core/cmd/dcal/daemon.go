@@ -337,7 +337,11 @@ func startHTTP(ctx context.Context, cfg *config.Config, r *repo.Repo, registry *
 		}
 		ics, err := icsexport.Calendar(req.Context(), r, calendarID)
 		if err != nil {
-			http.NotFound(w, req)
+			if repo.IsNotFound(err) {
+				http.NotFound(w, req)
+				return
+			}
+			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
 		w.Header().Set("Content-Type", "text/calendar; charset=utf-8")

@@ -1162,7 +1162,7 @@ Item {
         active: false
         sourceComponent: FileBrowserModal {
             saveMode: true
-            fileExtensions: ["ics"]
+            fileExtensions: ["*.ics"]
             browserTitle: I18n.tr("Export .ics", "window title for the calendar export file picker")
             onAccepted: paths => {
                 if (root.actionCalendar && paths.length > 0)

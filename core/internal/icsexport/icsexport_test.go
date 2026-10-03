@@ -11,6 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/AvengeMedia/dankcalendar/core/ent/account"
+	"github.com/AvengeMedia/dankcalendar/core/ent/event"
 	"github.com/AvengeMedia/dankcalendar/core/internal/calendar"
 	"github.com/AvengeMedia/dankcalendar/core/internal/icsexport"
 	"github.com/AvengeMedia/dankcalendar/core/internal/icsimport"
@@ -154,6 +155,60 @@ func TestCalendarExportsTimedAllDayAndRecurringEvents(t *testing.T) {
 		foundOverride = true
 	}
 	assert.True(t, foundOverride, "expected an exception VEVENT anchored to series-1")
+}
+
+// TestCalendarFoldsCancelledInstanceIntoExdate covers a deleted occurrence of
+// a synced Google series: the sync engine stores it as an exception row with
+// only id, RecurringID, OriginalStart, and a cancelled status (Google guarantees
+// nothing else for it), so Start/End are zero. Exporting that row as its own
+// VEVENT would hand subscribers a blank event in year 0001 that never replaces
+// the real occurrence; it must instead exclude the occurrence via EXDATE.
+func TestCalendarFoldsCancelledInstanceIntoExdate(t *testing.T) {
+	r, ctx := newTestRepo(t)
+	calID := seedCalendar(t, r, ctx)
+
+	seriesStart := time.Date(2026, 1, 12, 9, 0, 0, 0, time.UTC)
+	rec := &calendar.Recurrence{RRule: []string{"FREQ=WEEKLY;COUNT=5"}}
+	_, err := r.UpsertEvent(ctx, repo.UpsertEventInput{
+		CalendarID: calID,
+		UID:        "series-2",
+		Summary:    "Weekly sync",
+		Start:      seriesStart,
+		End:        seriesStart.Add(time.Hour),
+		Recurrence: rec.ToMap(),
+	})
+	require.NoError(t, err)
+
+	cancelledOriginal := seriesStart.AddDate(0, 0, 7)
+	_, err = r.UpsertEvent(ctx, repo.UpsertEventInput{
+		CalendarID:    calID,
+		UID:           "series-2/20260119T090000Z",
+		RecurringID:   "series-2",
+		OriginalStart: cancelledOriginal,
+		Status:        event.StatusCancelled,
+	})
+	require.NoError(t, err)
+
+	ics, err := icsexport.Calendar(ctx, r, calID)
+	require.NoError(t, err)
+
+	// No standalone VEVENT for the cancelled instance, and no DTSTART in year 1.
+	assert.NotContains(t, ics, "00010101")
+	dec := ical.NewDecoder(bytes.NewReader([]byte(ics)))
+	vcal, err := dec.Decode()
+	require.NoError(t, err)
+	for _, comp := range vcal.Events() {
+		assert.Nil(t, comp.Props.Get(ical.PropRecurrenceID), "cancelled instance must not be written as its own VEVENT")
+	}
+
+	// The master's RRULE now excludes the cancelled occurrence via EXDATE, so
+	// icsimport's expansion (via the recurrence package) skips it.
+	doc, err := icsimport.Parse([]byte(ics))
+	require.NoError(t, err)
+	require.Len(t, doc.Events, 1)
+	series := doc.Events[0]
+	require.NotNil(t, series.Recurrence)
+	assert.Equal(t, []string{cancelledOriginal.UTC().Format("20060102T150405Z")}, series.Recurrence.ExDate)
 }
 
 func TestCalendarReturnsNotFoundForUnknownCalendar(t *testing.T) {
