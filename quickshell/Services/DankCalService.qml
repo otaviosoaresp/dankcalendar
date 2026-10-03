@@ -616,6 +616,48 @@ Singleton {
         });
     }
 
+    function getCalendarIcsLink(calendarId, callback) {
+        sendRequest("calendars.icsLink", {
+            "calendarId": calendarId
+        }, response => {
+            if (response.error) {
+                lastError = response.error;
+                if (callback)
+                    callback(null);
+                return;
+            }
+            if (callback)
+                callback((response.result || {}).url || "");
+        });
+    }
+
+    function exportCalendarIcs(calendarId, callback) {
+        sendRequest("calendars.export", {
+            "calendarId": calendarId
+        }, response => {
+            if (response.error) {
+                lastError = response.error;
+                if (callback)
+                    callback(null);
+                return;
+            }
+            if (callback)
+                callback(response.result || "");
+        });
+    }
+
+    function exportCalendarIcsToFile(calendarId, path, callback) {
+        sendRequest("calendars.exportToFile", {
+            "calendarId": calendarId,
+            "path": path
+        }, response => {
+            if (response.error)
+                lastError = response.error;
+            if (callback)
+                callback(response);
+        });
+    }
+
     function _ensureWindow() {
         if (!_loadedFrom || !_loadedTo) {
             reloadEvents();

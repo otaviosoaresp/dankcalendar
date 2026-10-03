@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -21,6 +22,8 @@ import (
 	"github.com/AvengeMedia/dankcalendar/core/config"
 	"github.com/AvengeMedia/dankcalendar/core/internal/calendar"
 	"github.com/AvengeMedia/dankcalendar/core/internal/colorscheme"
+	"github.com/AvengeMedia/dankcalendar/core/internal/icsexport"
+	"github.com/AvengeMedia/dankcalendar/core/internal/icstoken"
 	"github.com/AvengeMedia/dankcalendar/core/internal/invitations"
 	"github.com/AvengeMedia/dankcalendar/core/internal/ipc"
 	dankkeyring "github.com/AvengeMedia/dankcalendar/core/internal/keyring"
@@ -196,7 +199,18 @@ func bootDaemonServices(ctx context.Context) (*daemonServices, error) {
 		)
 	}
 
-	httpSrv, httpAddr, httpErrCh, err := startHTTP(ctx, cfg, r, registry, secrets, broker)
+	dataDir, err := paths.DataDir()
+	if err != nil {
+		r.Close()
+		return nil, err
+	}
+	icsSecret, err := icstoken.LoadOrCreateSecret(dataDir)
+	if err != nil {
+		r.Close()
+		return nil, err
+	}
+
+	httpSrv, httpAddr, httpErrCh, err := startHTTP(ctx, cfg, r, registry, secrets, broker, icsSecret)
 	if err != nil {
 		r.Close()
 		return nil, err
@@ -211,6 +225,7 @@ func bootDaemonServices(ctx context.Context) (*daemonServices, error) {
 		Broker:      broker,
 		Flows:       flows,
 		HTTPAddr:    httpAddr,
+		IcsSecret:   icsSecret,
 		Sync:        syncEngine,
 		Reminders:   remindersEngine,
 		Bus:         bus,
@@ -294,7 +309,7 @@ func startIPC(ctx context.Context, deps ipc.Deps) (*ipc.Server, <-chan error, er
 	return srv, errCh, nil
 }
 
-func startHTTP(ctx context.Context, cfg *config.Config, r *repo.Repo, registry *calendar.Registry, secrets calendar.SecretStore, broker *auth_handler.CallbackBroker) (*http.Server, string, <-chan error, error) {
+func startHTTP(ctx context.Context, cfg *config.Config, r *repo.Repo, registry *calendar.Registry, secrets calendar.SecretStore, broker *auth_handler.CallbackBroker, icsSecret []byte) (*http.Server, string, <-chan error, error) {
 	if cfg.DisableHTTP {
 		errCh := make(chan error, 1)
 		return nil, "", errCh, nil
@@ -309,6 +324,29 @@ func startHTTP(ctx context.Context, cfg *config.Config, r *repo.Repo, registry *
 
 	callbackHandler := auth_handler.NewCallbackHandler(broker)
 	router.Get("/oauth/callback", callbackHandler)
+
+	// Read-only ICS subscription feed: the token names the calendar, so an
+	// unknown or tampered one reads as a plain 404 rather than leaking which
+	// part of the URL was wrong.
+	router.Get("/ics/{token}", func(w http.ResponseWriter, req *http.Request) {
+		token := strings.TrimSuffix(chi.URLParam(req, "token"), ".ics")
+		calendarID, ok := icstoken.CalendarID(icsSecret, token)
+		if !ok {
+			http.NotFound(w, req)
+			return
+		}
+		ics, err := icsexport.Calendar(req.Context(), r, calendarID)
+		if err != nil {
+			if repo.IsNotFound(err) {
+				http.NotFound(w, req)
+				return
+			}
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "text/calendar; charset=utf-8")
+		_, _ = w.Write([]byte(ics))
+	})
 
 	// Microsoft requires registering the bare http://localhost redirect
 	// (path matched exactly, port ignored), so callbacks also land on "/".

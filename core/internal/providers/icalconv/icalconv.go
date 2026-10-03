@@ -352,11 +352,26 @@ func BuildEvent(ev *cal.Event, uid string) *ical.Event {
 	}
 
 	setEventTimes(props, ev)
+	setRecurrenceID(props, ev)
 	setRecurrence(props, ev.Recurrence)
 	setAttendees(props, ev)
 	addAlarms(event.Component, ev.Reminders)
 
 	return event
+}
+
+// setRecurrenceID writes RECURRENCE-ID for an occurrence override — an event
+// with a non-zero OriginalStart — so it anchors back to its series master on
+// export, the same way participation.go's deriveException does for a reply.
+func setRecurrenceID(props ical.Props, ev *cal.Event) {
+	if ev.OriginalStart.IsZero() {
+		return
+	}
+	if ev.AllDay {
+		props.SetDate(ical.PropRecurrenceID, ev.OriginalStart)
+	} else {
+		props.SetDateTime(ical.PropRecurrenceID, inZone(ev.OriginalStart, ev.StartTimeZone))
+	}
 }
 
 func setEventTimes(props ical.Props, ev *cal.Event) {
