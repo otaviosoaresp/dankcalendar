@@ -588,6 +588,12 @@
     "comment": "settings window title"
   },
   {
+    "term": "Calendar color",
+    "context": "Calendar color",
+    "reference": "Modals/CalendarColorDialog.qml:36",
+    "comment": "calendar color dialog header"
+  },
+  {
     "term": "Calendar file",
     "context": "Calendar file",
     "reference": "Modals/ImportIcsModal.qml:102",
@@ -626,8 +632,8 @@
   {
     "term": "Cancel",
     "context": "Cancel",
-    "reference": "Modals/ConfirmDialog.qml:33, Modals/EventDetailsModal.qml:640, Modals/EventDetailsModal.qml:853, Modals/NewCalendarDialog.qml:57, Modals/RenameCalendarDialog.qml:59, Modals/TaskDetailsModal.qml:547, Modals/AccountAddModal.qml:1103, Modals/ImportIcsModal.qml:355, Modals/CalendarRemindersDialog.qml:351",
-    "comment": "button to cancel oauth browser step | confirm dialog button to cancel | event form button to cancel editing | import dialog button to close without importing | new calendar dialog button to cancel | per-calendar reminders dialog button to cancel | rename calendar dialog button to cancel | task form button to discard changes"
+    "reference": "Modals/TaskDetailsModal.qml:545, Modals/RenameCalendarDialog.qml:59, Modals/NewCalendarDialog.qml:57, Modals/ImportIcsModal.qml:353, Modals/EventDetailsModal.qml:623, Modals/EventDetailsModal.qml:836, Modals/ConfirmDialog.qml:33, Modals/CalendarRemindersDialog.qml:345, Modals/CalendarColorDialog.qml:86, Modals/AccountAddModal.qml:1094",
+    "comment": "button to cancel oauth browser step | calendar color dialog button to cancel | confirm dialog button to cancel | event form button to cancel editing | import dialog button to close without importing | new calendar dialog button to cancel | per-calendar reminders dialog button to cancel | rename calendar dialog button to cancel | task form button to discard changes"
   },
   {
     "term": "Capabilities",
@@ -1308,6 +1314,12 @@
     "comment": "hint on setup screenshot thumbnail"
   },
   {
+    "term": "Enter a hex color like #4287f5.",
+    "context": "Enter a hex color like #4287f5.",
+    "reference": "Modals/CalendarColorDialog.qml:71",
+    "comment": "calendar color dialog hex validation error"
+  },
+  {
     "term": "Enter a name for the calendar.",
     "context": "Enter a name for the calendar.",
     "reference": "Modals/NewCalendarDialog.qml:26",
@@ -1462,6 +1474,12 @@
     "context": "Google Tasks is unavailable. <a href=\"https://console.cloud.google.com/apis/library/tasks.googleapis.com\" style=\"text-decoration:none; color:%1;\">Enable its API</a> or reconnect this account, then refresh, to sync tasks.",
     "reference": "Modals/SettingsContent.qml:49",
     "comment": "account notice when google tasks is disabled or its permission is missing"
+  },
+  {
+    "term": "Hex color",
+    "context": "Hex color",
+    "reference": "Modals/CalendarColorDialog.qml:68",
+    "comment": "calendar color dialog hex input label"
   },
   {
     "term": "Hide",
@@ -2576,8 +2594,8 @@
   {
     "term": "Save",
     "context": "Save",
-    "reference": "Modals/EventDetailsModal.qml:653, Modals/RenameCalendarDialog.qml:65, Modals/TaskDetailsModal.qml:555, Modals/CalendarRemindersDialog.qml:357",
-    "comment": "event details button to save changes | per-calendar reminders dialog button to save | rename calendar dialog button to save name | task form button to persist the task"
+    "reference": "Modals/TaskDetailsModal.qml:553, Modals/RenameCalendarDialog.qml:65, Modals/EventDetailsModal.qml:636, Modals/CalendarRemindersDialog.qml:351, Modals/CalendarColorDialog.qml:92",
+    "comment": "calendar color dialog button to save color | event details button to save changes | per-calendar reminders dialog button to save | rename calendar dialog button to save name | task form button to persist the task"
   },
   {
     "term": "Saving...",
@@ -2910,6 +2928,12 @@
     "comment": "rename calendar dialog note showing provider name"
   },
   {
+    "term": "Synced color is %1. This override only changes it in Dank Calendar.",
+    "context": "Synced color is %1. This override only changes it in Dank Calendar.",
+    "reference": "Modals/CalendarColorDialog.qml:37",
+    "comment": "calendar color dialog note showing provider color"
+  },
+  {
     "term": "System default",
     "context": "System default",
     "reference": "Modals/SettingsContent.qml:79",
@@ -3010,6 +3034,12 @@
     "context": "This account cannot be reconnected — remove it and add it again.",
     "reference": "Services/DankCalService.qml:1449",
     "comment": "error when reconnect is unavailable for a provider"
+  },
+  {
+    "term": "This calendar has no synced color. This override only changes it in Dank Calendar.",
+    "context": "This calendar has no synced color. This override only changes it in Dank Calendar.",
+    "reference": "Modals/CalendarColorDialog.qml:37",
+    "comment": "calendar color dialog note when provider has no color"
   },
   {
     "term": "This event",
@@ -3118,6 +3148,12 @@
     "context": "Use a bundled color palette.",
     "reference": "Modals/SettingsContent.qml:646",
     "comment": "color source description for preset"
+  },
+  {
+    "term": "Use synced color",
+    "context": "Use synced color",
+    "reference": "Modals/CalendarColorDialog.qml:80",
+    "comment": "calendar color dialog button to revert to provider color"
   },
   {
     "term": "Use synced name",

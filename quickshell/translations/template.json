@@ -686,6 +686,13 @@
     "comment": ""
   },
   {
+    "term": "Calendar color",
+    "translation": "",
+    "context": "calendar color dialog header",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Calendar file",
     "translation": "",
     "context": "import dialog subtitle for a plain iCalendar file",
@@ -730,7 +737,7 @@
   {
     "term": "Cancel",
     "translation": "",
-    "context": "button to cancel oauth browser step | confirm dialog button to cancel | event form button to cancel editing | import dialog button to close without importing | new calendar dialog button to cancel | per-calendar reminders dialog button to cancel | rename calendar dialog button to cancel | task form button to discard changes",
+    "context": "button to cancel oauth browser step | calendar color dialog button to cancel | confirm dialog button to cancel | event form button to cancel editing | import dialog button to close without importing | new calendar dialog button to cancel | per-calendar reminders dialog button to cancel | rename calendar dialog button to cancel | task form button to discard changes",
     "reference": "",
     "comment": ""
   },
@@ -1526,6 +1533,13 @@
     "comment": ""
   },
   {
+    "term": "Enter a hex color like #4287f5.",
+    "translation": "",
+    "context": "calendar color dialog hex validation error",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Enter a name for the calendar.",
     "translation": "",
     "context": "new calendar dialog validation when the name is empty",
@@ -1704,6 +1718,13 @@
     "term": "Google Tasks is unavailable. <a href=\"https://console.cloud.google.com/apis/library/tasks.googleapis.com\" style=\"text-decoration:none; color:%1;\">Enable its API</a> or reconnect this account, then refresh, to sync tasks.",
     "translation": "",
     "context": "account notice when google tasks is disabled or its permission is missing",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Hex color",
+    "translation": "",
+    "context": "calendar color dialog hex input label",
     "reference": "",
     "comment": ""
   },
@@ -3005,7 +3026,7 @@
   {
     "term": "Save",
     "translation": "",
-    "context": "event details button to save changes | per-calendar reminders dialog button to save | rename calendar dialog button to save name | task form button to persist the task",
+    "context": "calendar color dialog button to save color | event details button to save changes | per-calendar reminders dialog button to save | rename calendar dialog button to save name | task form button to persist the task",
     "reference": "",
     "comment": ""
   },
@@ -3395,6 +3416,13 @@
     "comment": ""
   },
   {
+    "term": "Synced color is %1. This override only changes it in Dank Calendar.",
+    "translation": "",
+    "context": "calendar color dialog note showing provider color",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "System default",
     "translation": "",
     "context": "language dropdown option that follows the system language",
@@ -3510,6 +3538,13 @@
     "term": "This account cannot be reconnected — remove it and add it again.",
     "translation": "",
     "context": "error when reconnect is unavailable for a provider",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "This calendar has no synced color. This override only changes it in Dank Calendar.",
+    "translation": "",
+    "context": "calendar color dialog note when provider has no color",
     "reference": "",
     "comment": ""
   },
@@ -3636,6 +3671,13 @@
     "term": "Use a bundled color palette.",
     "translation": "",
     "context": "color source description for preset",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Use synced color",
+    "translation": "",
+    "context": "calendar color dialog button to revert to provider color",
     "reference": "",
     "comment": ""
   },
