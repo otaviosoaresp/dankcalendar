@@ -115,6 +115,20 @@ an XDG autostart entry that launches `dcal run -d --hidden`.
 - Qt 6 declarative (including `Qt.labs.platform` for the tray icon)
 - Go 1.25+ (build only — the binary is pure Go, no CGO)
 
+### Updating this fork
+
+This fork is installed from source into `~/.local` (no sudo, no Flatpak). To
+pull upstream changes, rebuild, and restart the running daemon:
+
+```bash
+git remote add upstream https://github.com/AvengeMedia/dankcalendar.git  # once
+git fetch upstream
+git merge upstream/master && make build && PREFIX=$HOME/.local make install && dcal restart
+```
+
+`~/.local/bin` must be on the session `PATH` so launchers find `dcal`, and on
+Debian/Ubuntu the tray icon needs `qml6-module-qt-labs-platform`.
+
 ## Features
 
 **Multiple Providers**
